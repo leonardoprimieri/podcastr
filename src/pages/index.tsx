@@ -4,6 +4,7 @@ import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { api } from '../services/api';
 import { convertDurationToTimeString } from '../utils/convertDurationToTimeString';
+import Link from 'next/link';
 
 import styles from '../../styles/home.module.scss';
 
@@ -55,6 +56,46 @@ export default function Home({ lastEpisodes, allEpisodes }: HomeProps) {
           </li>
         ))}
       </ul>
+
+      <table cellSpacing={0}>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Podcast</th>
+            <th>Integrantes</th>
+            <th>Data</th>
+            <th>Duração</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {allEpisodes.map((episode) => {
+            <tr key={episode.id}>
+              <td>
+                <Image
+                  src={episode.thumbnail}
+                  width="192"
+                  height="192"
+                  objectFit="cover"
+                />
+              </td>
+              <td>
+                <Link href={`episode/${episode.title}`}>
+                  <a>{episode.title}</a>
+                </Link>
+              </td>
+              <td>{episode.members}</td>
+              <td>{episode.publishedAt}</td>
+              <td>{episode.durationString}</td>
+              <td>
+                <button>
+                  <img src="/play-green.svg" alt="play" />
+                </button>
+              </td>
+            </tr>;
+          })}
+        </tbody>
+      </table>
     </section>
   );
 }
